@@ -4,27 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Posts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
     public function index(Posts $posts)
     {
-        $posts = $posts->getPosts();
+        //$posts = $posts->getPosts();
+        $posts = DB::table('posts')->get();
 
-        return view('posts', [
+        return view('posts.index', [
             'posts' => $posts,
         ]);
     }
 
-    public function show(Posts $posts, string $id)
+    public function show(string $id)
     {
-        $post = [
-            'id' => $id,
-            'title' => 'First post' . $id,
-            'text' => 'This is post 1' . $id,
-        ];
 
-        return view('post', [
+        $post = DB::table('posts')->find($id);
+
+        if (!$post) {
+            abort(404);
+        }
+
+        return view('posts.show', [
             'post' => $post,
         ]);
     }

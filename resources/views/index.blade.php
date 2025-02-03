@@ -3,7 +3,7 @@
 @section('title', 'Главная')
 
 @section('menu')
-    @include('menu')
+    @include('parts.menu')
 @endsection
 
 @section('content')
@@ -20,7 +20,7 @@
                             </div>
                         @endif
 
-                            <h2>Добро пожаловать в наш блог!</h2>
+                        <h2>Добро пожаловать в наш блог!</h2>
                     </div>
                 </div>
             </div>
