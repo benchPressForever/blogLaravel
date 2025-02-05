@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Posts;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PostsController extends Controller
 {
-    public function index(Posts $posts)
+    public function index()
     {
-        //$posts = $posts->getPosts();
-        $posts = DB::table('posts')->get();
+        $posts = Post::query()->paginate(10);
 
         return view('posts.index', [
             'posts' => $posts,
@@ -21,11 +20,7 @@ class PostsController extends Controller
     public function show(string $id)
     {
 
-        $post = DB::table('posts')->find($id);
-
-        if (!$post) {
-            abort(404);
-        }
+        $post = Post::findOrFail($id);
 
         return view('posts.show', [
             'post' => $post,

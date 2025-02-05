@@ -14,14 +14,14 @@
 
                 <div class="card">
 
-                    @include('admin.parts.errors')
+                    @include('parts.messages')
 
 
                     <div class="card-header">Посты</div>
 
                     <div class="card-body">
 
-                        <div class="row w-50">
+                        <div class="row mb-5">
                             <div class="col">
                                 <h2>CRUD посты</h2>
                             </div>
@@ -29,26 +29,31 @@
                             <div class="col">
                                 <a href="{{ route('admin.posts.create') }}" class="btn btn-success">Создать пост</a>
                             </div>
+                            <div class="col"></div>
                         </div>
 
                         @forelse ($posts as $post)
 
                             <div class="row">
                                 <div class="col">
-                                    <a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
+                                    <a  href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
                                 </div>
 
                                 <div class="col">
-                                    <a href="{{ route('admin.posts.edit', $post->id) }}">Изменить</a>
+                                    <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->id) }}">Изменить</a>
                                 </div>
 
                                 <div class="col">
-                                    <a href="{{ route('admin.posts.delete', $post->id) }}">Удалить</a>
+                                    <a class="btn btn-danger" href="{{ route('admin.posts.delete', $post->id) }}">Удалить</a>
                                 </div>
                             </div><br>
                         @empty
                             <p>Нет постов</p>
                         @endforelse
+
+                        <div class="mt-5">
+                            {{ $posts->links() }}
+                        </div>
 
                     </div>
                 </div>

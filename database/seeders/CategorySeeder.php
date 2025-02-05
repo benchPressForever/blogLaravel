@@ -13,10 +13,18 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i < 10; $i++) {
-            DB::table('categories')->insert([
-                'name' => fake()->realText(10),
-            ]);
-        }
+        $categories = [
+            [
+                'name' => 'Спорт',
+            ],
+            [
+                'name' => 'Политика',
+            ],
+            [
+                'name' => 'Новости',
+            ],
+
+        ];
+        DB::table('categories')->insert($categories);
     }
 }

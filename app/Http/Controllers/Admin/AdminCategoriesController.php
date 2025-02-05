@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +13,7 @@ class AdminCategoriesController extends Controller
 {
     public function index()
     {
-        $categories = DB::table('categories')->get();
+        $categories = Category::paginate(5);
 
         return view('admin.categories.index', [
             'categories' => $categories,
@@ -19,10 +21,15 @@ class AdminCategoriesController extends Controller
 
     }
 
-    public function create()
-    {
-        return view('admin.categories.create');
+    public function show(string $id){
+        $posts = Post::where('category_id', $id)->paginate(5);
+
+        return view('admin.posts.index', [
+           'posts' => $posts,
+        ]);
     }
+
+
 
     public function store(Request $request)
     {
@@ -32,27 +39,29 @@ class AdminCategoriesController extends Controller
             'name' => 'required|min:5|max:255',
         ]);
 
+        try{
+            Category::create($validated);
+        }
+        catch (\Exception $exception){
+            return redirect()->route('admin.categories.index')->with('error', 'Ошибка добавления категории!');
+        }
 
-        $post = DB::table('categories')->insert($validated);
-        $id = DB::getPdo()->lastInsertId();
-
-        if (is_null($post)) return redirect()->route('admin.categories.index', $id)->with('error', 'Ошибка добавления категории!');
-
-        return redirect()->route('admin.categories.index', $id)->with('success', 'Категория успешно добавлена!');
+        return redirect()->route('admin.categories.index')->with('success', 'Категория успешно добавлена!');
     }
 
 
     public function edit(string $id)
     {
-        $category = DB::table('categories')->find($id);
-
-        if (!$category) {
-            abort(404);
-        }
+        $category = Category::findOrFail($id);
 
         return view('admin.categories.edit', [
             'category' => $category,
         ]);
+    }
+
+    public function create()
+    {
+        return view('admin.categories.create');
     }
 
     public function update(Request $request,string $id)
@@ -61,25 +70,28 @@ class AdminCategoriesController extends Controller
             'name' => 'required|min:5|max:255',
         ]);
 
-        $category = DB::table('categories')->where('id',$id)->update($validated);
-
-        if(is_null($category)){
-            return redirect()->route('admin.categories.index', $id)->with('error', 'Не удалось изменить категорию!');
+        try{
+            Category::findOrFail($id)->update($validated);
+        }
+        catch (\Exception $exception){
+            return redirect()->route('admin.categories.index')->with('error', 'Не удалось изменить категорию!');
         }
 
-        return redirect()->route('admin.categories.index', $id)->with('success', 'Категория успешно изменёна!');
+        return redirect()->route('admin.categories.index')->with('success', 'Категория успешно изменёна!');
     }
 
 
     public function delete(string $id)
     {
-        $category = DB::table('categories')->where('id',$id)->delete();
 
-        if(is_null($category)){
-            return redirect()->route('admin.categories.index', $id)->with('error', 'Пост не удалось удалить!');
+        try {
+            Post::query()->where('category_id', $id)->delete();
+            Category::query()->findOrFail($id)->delete();
+        }catch (\Exception $exception){
+            return redirect()->route('admin.categories.index')->with('error', 'Пост не удалось удалить!');
         }
 
-        return redirect()->route('admin.categories.index', $id)->with('success', 'Пост успешно удалён!');
+        return redirect()->route('admin.categories.index')->with('success', 'Пост успешно удалён!');
     }
 
 }

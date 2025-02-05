@@ -18,17 +18,40 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.posts.update',$post->id) }}">
                             @csrf
+                            @method('PUT')
+                            <div class="row mb-3">
+                                <label for="name" class="col-md-4 col-form-label text-md-end">Категория поста</label>
+
+                                <div class="col-md-6">
+
+                                    <select class="form-select" name="category_id" id="category_id">
+                                        @foreach ($categories as $category)
+                                            <option {{ old('category_id', $post->category_id) == $category->id ? 'selected' : '' }} value="{{ $category->id }}" >
+                                                {{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('category')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
+                            </div>
+
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">Заголовок поста</label>
 
                                 <div class="col-md-6">
+
                                     <input id="title" type="text"
                                            class="form-control @error('title') is-invalid @enderror" name="title"
                                            autofocus value="{{ $post->title}}">
                                     @error('title')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                             </div>

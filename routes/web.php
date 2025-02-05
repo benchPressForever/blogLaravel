@@ -41,7 +41,7 @@ Route::name('admin.')
                 Route::get('/create', [AdminPostsController::class, 'create'])->name('create');
                 Route::get('/delete/{id}', [AdminPostsController::class, 'delete'])->name('delete');
                 Route::post('/store', [AdminPostsController::class, 'store'])->name('store');
-                Route::post('/{id}', [AdminPostsController::class, 'update'])->name('update');
+                Route::put('/{id}', [AdminPostsController::class, 'update'])->name('update');
                 Route::get('/{id}/edit', [AdminPostsController::class, 'edit'])->name('edit');
             });
         Route::name('categories.')
@@ -50,9 +50,10 @@ Route::name('admin.')
                 Route::get('/', [AdminCategoriesController::class, 'index'])->name('index');
                 Route::get('/create', [AdminCategoriesController::class, 'create'])->name('create');
                 Route::post('/store', [AdminCategoriesController::class, 'store'])->name('store');
-                Route::post('/{id}', [AdminCategoriesController::class, 'update'])->name('update');
+                Route::put('/{id}', [AdminCategoriesController::class, 'update'])->name('update');
                 Route::get('/{id}/edit', [AdminCategoriesController::class, 'edit'])->name('edit');
                 Route::get('/delete/{id}', [AdminCategoriesController::class, 'delete'])->name('delete');
+                Route::get('/show/{id}', [AdminCategoriesController::class, 'show'])->name('show');
             });
     });
 

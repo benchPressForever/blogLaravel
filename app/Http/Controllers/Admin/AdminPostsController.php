@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 class AdminPostsController extends Controller
 {
 
     public function index(){
 
-        $posts = DB::table('posts')->get();
+        $posts = Post::paginate(5);
 
         return view('admin.posts.index', [
             'posts' => $posts,
@@ -21,13 +24,11 @@ class AdminPostsController extends Controller
 
     public function edit(string $id)
     {
-        $post = DB::table('posts')->find($id);
-
-        if (!$post) {
-            abort(404);
-        }
+        $categories = Category::all();
+        $post = Post::query()->findOrFail($id);
 
         return view('admin.posts.edit', [
+            'categories' => $categories,
             'post' => $post,
         ]);
     }
@@ -37,33 +38,40 @@ class AdminPostsController extends Controller
         $validated = $request->validate([
             'title' => 'required|min:5|max:255',
             'text' => 'required|min:5|max:20000',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        $post = DB::table('posts')->where('id',$id)->update($validated);
-
-        if(is_null($post)){
-            return redirect()->route('admin.posts.index', $id)->with('error', 'Не удалось изменить пост!');
+        try {
+            Post::findOrFail($id)->update($validated);
+        }
+        catch (\Exception $exception){
+            return redirect()->route('admin.posts.index')->with('error', 'Не удалось изменить пост!');
         }
 
-        return redirect()->route('admin.posts.index', $id)->with('success', 'Пост успешно изменён!');
+        return redirect()->route('admin.posts.index')->with('success', 'Пост успешно изменён!');
     }
 
 
 
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+
+        return view('admin.posts.create', [
+            'categories' => $categories
+        ]);
     }
 
     public function delete(string $id)
     {
-        $post = DB::table('posts')->where('id',$id)->delete();
-
-        if(is_null($post)){
-            return redirect()->route('admin.posts.index', $id)->with('error', 'Пост не удалось удалить!');
+        try {
+            Post::findOrFail($id)->delete();
+        }
+        catch (\Exception $exception){
+            return redirect()->route('admin.posts.index')->with('error', 'Пост не удалось удалить!');
         }
 
-        return redirect()->route('admin.posts.index', $id)->with('success', 'Пост успешно удалён!');
+        return redirect()->route('admin.posts.index')->with('success', 'Пост успешно удалён!');
     }
 
     public function store(Request $request)
@@ -73,15 +81,17 @@ class AdminPostsController extends Controller
         $validated = $request->validate([
             'title' => 'required|min:5|max:255',
             'text' => 'required|min:5|max:20000',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
+        try{
+            Post::create($validated);
+        }
+        catch (\Exception $exception){
+            return redirect()->route('admin.posts.index')->with('error', 'Ошибка добавления поста');
+        }
 
-        $post = DB::table('posts')->insert($validated);
-        $id = DB::getPdo()->lastInsertId();
-
-        if (is_null($post)) return redirect()->route('admin.posts.index', $id)->with('error', 'Ошибка добавления поста');
-
-        return redirect()->route('admin.posts.index', $id)->with('success', 'Пост успешно добавлен');
+        return redirect()->route('admin.posts.index')->with('success', 'Пост успешно добавлен');
     }
 
 }
