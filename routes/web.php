@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Admin\AdminCategoriesController;
 use App\Http\Controllers\Admin\AdminPostsController;
+use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,17 +21,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'index')->name('home');
 
+Route::get('/users/{user}', [UsersController::class,'show'])->name('users.show');
+
+
+
 Route::name('posts.')
     ->prefix('posts')
     ->group(function () {
         Route::get('/{id}', [PostsController::class, 'show'])->where('id', '[0-9]+')->name('show');
         Route::get('/', [PostsController::class, 'index'])->name('index');
+        Route::post('/{id}/add/like', [PostsController::class, 'addLike'])->name('like.add');
     });
 
 
 
 
 Route::name('admin.')
+    ->middleware(['auth', 'is_admin'])
     ->prefix('admin')
     ->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
@@ -54,6 +62,15 @@ Route::name('admin.')
                 Route::get('/{id}/edit', [AdminCategoriesController::class, 'edit'])->name('edit');
                 Route::get('/delete/{id}', [AdminCategoriesController::class, 'delete'])->name('delete');
                 Route::get('/show/{id}', [AdminCategoriesController::class, 'show'])->name('show');
+            });
+        Route::name('users.')
+            ->prefix('users')
+            ->group(function () {
+                Route::get('/', [AdminUsersController::class, 'index'])->name('index');
+                Route::get('/{user}/edit', [AdminUsersController::class, 'edit'])->name('edit');
+                Route::put('/{user}', [AdminUsersController::class, 'update'])->name('update');
+                Route::get('/delete/{user}', [AdminUsersController::class, 'delete'])->name('delete');
+                Route::get('/change/admin/{user}', [AdminUsersController::class, 'changeAdmin'])->name('change.admin');
             });
     });
 

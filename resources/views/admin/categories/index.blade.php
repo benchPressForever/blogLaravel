@@ -20,37 +20,39 @@
 
                             <div class="card-body">
 
-                                <div class="row mb-5">
-                                    <div class="col">
-                                        <h2>CRUD категории</h2>
-                                    </div>
+                                <h2>CRUD категории</h2>
 
-                                    <div class="col">
-                                        <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Создать
-                                            категорию</a>
-                                    </div>
-                                    <div class="col"></div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Название</th>
+                                        <th scope="col">Изменить</th>
+                                        <th scope="col">Удалить</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
 
-                                </div>
+                                            @forelse ($categories as $category)
 
-                                @forelse ($categories as $category)
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{{route('admin.categories.show', $category->id)}}">{{ $category->name }}</a>
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-primary" href="{{ route('admin.categories.edit', $category->id) }}">Изменить</a>
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-danger" href="{{ route('admin.categories.delete',$category->id) }}">Удалить</a>
+                                                        </td>
+                                                    </tr>
+                                            @empty
+                                                <p>Нет категорий</p>
+                                            @endforelse
 
-                                        <div class="row justify-content-center mb-3">
-                                            <div class="col">
-                                                <a href="{{route('admin.categories.show', $category->id)}}">{{ $category->name }}</a>
-                                            </div>
+                                    </tbody>
+                                </table>
 
-                                            <div class="col">
-                                                <a class="btn btn-primary" href="{{ route('admin.categories.edit', $category->id) }}">Изменить</a>
-                                            </div>
-
-                                            <div class="col">
-                                                <a class="btn btn-danger" href="{{ route('admin.categories.delete',$category->id) }}">Удалить</a>
-                                            </div>
-                                        </div><br>
-                                @empty
-                                    <p>Нет категорий</p>
-                                @endforelse
+                                <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Создать категорию</a>
 
                                 <div class="mt-5">
                                         {{ $categories->links() }}

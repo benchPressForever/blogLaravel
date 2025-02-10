@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Админ | Посты')
+@section('title', 'Админ | Пользователи')
 
 @section('menu')
     @include('admin.parts.menu')
@@ -17,47 +17,51 @@
                     @include('parts.messages')
 
 
-                    <div class="card-header">Посты</div>
+                    <div class="card-header">Пользователи</div>
 
                     <div class="card-body">
 
 
-                        <h2>CRUD посты</h2>
-
+                        <h2>CRUD Пользователи</h2>
 
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">Заголовок</th>
+                                <th scope="col">Имя</th>
                                 <th scope="col">Изменить</th>
                                 <th scope="col">Удалить</th>
+                                <th scope="col">Сделать админом</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                                @forelse ($posts as $post)
+
+                                @forelse ($users as $user)
+
                                     <tr>
+                                        <th scope="row">
+                                            <a class="@if($user->is_admin) text-danger @endif"  href="{{ route('users.show', $user) }}">{{ $user->name }} : {{$user->email}}</a>
+                                        </th>
                                         <td>
-                                            <a  href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
+                                            <a class="btn btn-primary" href="{{ route('admin.users.edit', $user) }}">Изменить</a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->id) }}">Изменить</a>
+                                            <a class="btn btn-danger" href="{{ route('admin.users.delete', $user) }}">Удалить</a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-danger" href="{{ route('admin.posts.delete', $post->id) }}">Удалить</a>
+                                            <a class="btn btn-info" href="{{ route('admin.users.change.admin', $user) }}">Сделать админом</a>
                                         </td>
                                     </tr>
+
                                 @empty
-                                    <p>Нет постов</p>
+                                    <p>Нет пользователей</p>
                                 @endforelse
 
                             </tbody>
                         </table>
 
-                        <a href="{{ route('admin.posts.create') }}" class="btn btn-success">Создать пост</a>
-
                         <div class="mt-5">
-                            {{ $posts->links() }}
+                            {{ $users->links() }}
                         </div>
 
                     </div>

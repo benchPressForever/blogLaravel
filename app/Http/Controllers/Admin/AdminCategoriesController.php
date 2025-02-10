@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateAndStoreCategoryRequest;
+use App\Http\Requests\UpdateAndStorePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -31,16 +33,10 @@ class AdminCategoriesController extends Controller
 
 
 
-    public function store(Request $request)
+    public function store(UpdateAndStoreCategoryRequest $request)
     {
-
-        //валидация данных
-        $validated = $request->validate([
-            'name' => 'required|min:5|max:255',
-        ]);
-
         try{
-            Category::create($validated);
+            Category::create($request->validated());
         }
         catch (\Exception $exception){
             return redirect()->route('admin.categories.index')->with('error', 'Ошибка добавления категории!');
@@ -64,14 +60,10 @@ class AdminCategoriesController extends Controller
         return view('admin.categories.create');
     }
 
-    public function update(Request $request,string $id)
+    public function update(UpdateAndStoreCategoryRequest $request, string $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|min:5|max:255',
-        ]);
-
         try{
-            Category::findOrFail($id)->update($validated);
+            Category::findOrFail($id)->update($request->validated());
         }
         catch (\Exception $exception){
             return redirect()->route('admin.categories.index')->with('error', 'Не удалось изменить категорию!');

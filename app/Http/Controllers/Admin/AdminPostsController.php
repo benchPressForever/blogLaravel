@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateAndStorePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -33,16 +35,17 @@ class AdminPostsController extends Controller
         ]);
     }
 
-    public function update(Request $request,string $id)
+    public function update(UpdateAndStorePostRequest $request, string $id)
     {
-        $validated = $request->validate([
-            'title' => 'required|min:5|max:255',
-            'text' => 'required|min:5|max:20000',
-            'category_id' => 'required|exists:categories,id',
-        ]);
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('posts', 'public');
+            $data['image'] = $imagePath;
+        }
 
         try {
-            Post::findOrFail($id)->update($validated);
+            Post::findOrFail($id)->update($data);
         }
         catch (\Exception $exception){
             return redirect()->route('admin.posts.index')->with('error', 'Не удалось изменить пост!');
@@ -55,6 +58,8 @@ class AdminPostsController extends Controller
 
     public function create()
     {
+
+
         $categories = Category::all();
 
         return view('admin.posts.create', [
@@ -74,17 +79,17 @@ class AdminPostsController extends Controller
         return redirect()->route('admin.posts.index')->with('success', 'Пост успешно удалён!');
     }
 
-    public function store(Request $request)
+    public function store(UpdateAndStorePostRequest $request)
     {
 
-        //валидация данных
-        $validated = $request->validate([
-            'title' => 'required|min:5|max:255',
-            'text' => 'required|min:5|max:20000',
-            'category_id' => 'required|exists:categories,id',
-        ]);
+        $validated = $request->validated();
 
         try{
+            $imagePath = null;
+            if($request->hasFile('image')){
+                $imagePath = $request->file('image')->store('posts', 'public');
+            }
+            $validated['image'] = $imagePath;
             Post::create($validated);
         }
         catch (\Exception $exception){

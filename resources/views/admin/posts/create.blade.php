@@ -16,7 +16,7 @@
                     <div class="card-header">Добавить пост</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('admin.posts.store') }}">
+                        <form enctype="multipart/form-data" method="POST" action="{{ route('admin.posts.store') }}">
                             @csrf
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">Категория поста</label>
@@ -55,6 +55,8 @@
                                 </div>
                             </div>
 
+
+
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">Текст поста</label>
 
@@ -62,6 +64,20 @@
                                     <textarea class="form-control @error('text') is-invalid @enderror"
                                               name="text">{{ old('text') }}</textarea>
                                     @error('text')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <label for="name" class="col-md-4 col-form-label text-md-end">Изображение</label>
+
+                                <div class="col-md-6">
+                                    <input type="file" class = "form-control" id = "image" name = "image">
+                                    @error('image')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
