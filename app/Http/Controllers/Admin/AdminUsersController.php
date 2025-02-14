@@ -57,13 +57,19 @@ class AdminUsersController extends Controller{
 
     public function changeAdmin(User $user){
         try{
-            $user->update(['is_admin' => 1]);
+            if($user->is_admin){
+                $user->update(['is_admin' => 0]);
+            }
+            else{
+                $user->update(['is_admin' => 1]);
+            }
+
         }catch (
             \Exception $e
         ){
-            return redirect()->route('admin.users.index')->with('error',"Не удалось сделать админом!");
+            return redirect()->route('admin.users.index')->with('error',"Не удалось изменить роль пользователя!");
         }
-        return redirect()->route('admin.users.index')->with('success', 'Пользователь успешно сделан админом!');
+        return redirect()->route('admin.users.index')->with('success', 'Успешно изменёна роль пользователя!');
     }
 
 }

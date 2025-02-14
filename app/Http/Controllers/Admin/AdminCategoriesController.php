@@ -46,13 +46,9 @@ class AdminCategoriesController extends Controller
     }
 
 
-    public function edit(string $id)
+    public function edit(Category $category)
     {
-        $category = Category::findOrFail($id);
-
-        return view('admin.categories.edit', [
-            'category' => $category,
-        ]);
+        return view('admin.categories.edit', ['category' => $category]);
     }
 
     public function create()
@@ -60,10 +56,10 @@ class AdminCategoriesController extends Controller
         return view('admin.categories.create');
     }
 
-    public function update(UpdateAndStoreCategoryRequest $request, string $id)
+    public function update(UpdateAndStoreCategoryRequest $request, Category $category)
     {
         try{
-            Category::findOrFail($id)->update($request->validated());
+            $category->update($request->validated());
         }
         catch (\Exception $exception){
             return redirect()->route('admin.categories.index')->with('error', 'Не удалось изменить категорию!');
@@ -73,12 +69,11 @@ class AdminCategoriesController extends Controller
     }
 
 
-    public function delete(string $id)
+    public function delete(Category $category)
     {
-
         try {
-            Post::query()->where('category_id', $id)->delete();
-            Category::query()->findOrFail($id)->delete();
+            Post::query()->where('category_id', $category->id)->delete();
+            $category->delete();
         }catch (\Exception $exception){
             return redirect()->route('admin.categories.index')->with('error', 'Пост не удалось удалить!');
         }

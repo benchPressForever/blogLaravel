@@ -39,10 +39,10 @@
                                                             <a href="{{route('admin.categories.show', $category->id)}}">{{ $category->name }}</a>
                                                         </td>
                                                         <td>
-                                                            <a class="btn btn-primary" href="{{ route('admin.categories.edit', $category->id) }}">Изменить</a>
+                                                            <a class="btn btn-primary" href="{{ route('admin.categories.edit', $category) }}">Изменить</a>
                                                         </td>
                                                         <td>
-                                                            <a class="btn btn-danger" href="{{ route('admin.categories.delete',$category->id) }}">Удалить</a>
+                                                            <a class="btn btn-danger" href="{{ route('admin.categories.delete',$category) }}">Удалить</a>
                                                         </td>
                                                     </tr>
                                             @empty

@@ -28,9 +28,9 @@ Route::get('/users/{user}', [UsersController::class,'show'])->name('users.show')
 Route::name('posts.')
     ->prefix('posts')
     ->group(function () {
-        Route::get('/{id}', [PostsController::class, 'show'])->where('id', '[0-9]+')->name('show');
+        Route::get('/{post}', [PostsController::class, 'show'])->where('id', '[0-9]+')->name('show');
         Route::get('/', [PostsController::class, 'index'])->name('index');
-        Route::post('/{id}/add/like', [PostsController::class, 'addLike'])->name('like.add');
+        Route::post('/{post}/add/like', [PostsController::class, 'addLike'])->name('like.add');
     });
 
 
@@ -47,10 +47,10 @@ Route::name('admin.')
             ->group(function () {
                 Route::get('/', [AdminPostsController::class, 'index'])->name('index');
                 Route::get('/create', [AdminPostsController::class, 'create'])->name('create');
-                Route::get('/delete/{id}', [AdminPostsController::class, 'delete'])->name('delete');
+                Route::get('/delete/{post}', [AdminPostsController::class, 'delete'])->name('delete');
                 Route::post('/store', [AdminPostsController::class, 'store'])->name('store');
-                Route::put('/{id}', [AdminPostsController::class, 'update'])->name('update');
-                Route::get('/{id}/edit', [AdminPostsController::class, 'edit'])->name('edit');
+                Route::put('/{post}', [AdminPostsController::class, 'update'])->name('update');
+                Route::get('/{post}/edit', [AdminPostsController::class, 'edit'])->name('edit');
             });
         Route::name('categories.')
             ->prefix('categories')
@@ -58,9 +58,9 @@ Route::name('admin.')
                 Route::get('/', [AdminCategoriesController::class, 'index'])->name('index');
                 Route::get('/create', [AdminCategoriesController::class, 'create'])->name('create');
                 Route::post('/store', [AdminCategoriesController::class, 'store'])->name('store');
-                Route::put('/{id}', [AdminCategoriesController::class, 'update'])->name('update');
-                Route::get('/{id}/edit', [AdminCategoriesController::class, 'edit'])->name('edit');
-                Route::get('/delete/{id}', [AdminCategoriesController::class, 'delete'])->name('delete');
+                Route::put('/{category}', [AdminCategoriesController::class, 'update'])->name('update');
+                Route::get('/{category}/edit', [AdminCategoriesController::class, 'edit'])->name('edit');
+                Route::get('/delete/{category}', [AdminCategoriesController::class, 'delete'])->name('delete');
                 Route::get('/show/{id}', [AdminCategoriesController::class, 'show'])->name('show');
             });
         Route::name('users.')

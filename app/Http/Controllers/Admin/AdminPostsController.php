@@ -24,10 +24,9 @@ class AdminPostsController extends Controller
         ]);
     }
 
-    public function edit(string $id)
+    public function edit(Post $post)
     {
         $categories = Category::all();
-        $post = Post::query()->findOrFail($id);
 
         return view('admin.posts.edit', [
             'categories' => $categories,
@@ -35,7 +34,7 @@ class AdminPostsController extends Controller
         ]);
     }
 
-    public function update(UpdateAndStorePostRequest $request, string $id)
+    public function update(UpdateAndStorePostRequest $request, Post $post)
     {
         $data = $request->validated();
 
@@ -45,7 +44,7 @@ class AdminPostsController extends Controller
         }
 
         try {
-            Post::findOrFail($id)->update($data);
+            $post->update($data);
         }
         catch (\Exception $exception){
             return redirect()->route('admin.posts.index')->with('error', 'Не удалось изменить пост!');
@@ -58,8 +57,6 @@ class AdminPostsController extends Controller
 
     public function create()
     {
-
-
         $categories = Category::all();
 
         return view('admin.posts.create', [
@@ -67,10 +64,10 @@ class AdminPostsController extends Controller
         ]);
     }
 
-    public function delete(string $id)
+    public function delete(Post $post)
     {
         try {
-            Post::findOrFail($id)->delete();
+            $post->delete();
         }
         catch (\Exception $exception){
             return redirect()->route('admin.posts.index')->with('error', 'Пост не удалось удалить!');

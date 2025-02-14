@@ -16,9 +16,7 @@ class PostsController extends Controller
             'posts' => $posts,
         ]);
     }
-    public function addLike(string $id){
-
-        $post = Post::query()->find($id);
+    public function addLike(Post $post){
 
         if($post){
             $post->increment('likes');
@@ -35,11 +33,8 @@ class PostsController extends Controller
         ]);
     }
 
-    public function show(string $id)
+    public function show(Post  $post)
     {
-
-        $post = Post::findOrFail($id);
-
         return view('posts.show', [
             'post' => $post,
         ]);

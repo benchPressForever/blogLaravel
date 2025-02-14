@@ -38,13 +38,13 @@
                                 @forelse ($posts as $post)
                                     <tr>
                                         <td>
-                                            <a  href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
+                                            <a  href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->id) }}">Изменить</a>
+                                            <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post) }}">Изменить</a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-danger" href="{{ route('admin.posts.delete', $post->id) }}">Удалить</a>
+                                            <a class="btn btn-danger" href="{{ route('admin.posts.delete', $post) }}">Удалить</a>
                                         </td>
                                     </tr>
                                 @empty

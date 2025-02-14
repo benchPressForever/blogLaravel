@@ -16,7 +16,7 @@
                     <div class="card-header">Изменить категорию</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('admin.categories.update',$category->id) }}">
+                        <form method="POST" action="{{ route('admin.categories.update',$category) }}">
                             @csrf
                             @method('PUT')
                             <div class="row mb-3">
