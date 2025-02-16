@@ -5,8 +5,10 @@ use App\Http\Controllers\Admin\AdminPostsController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('auth/{provider}/redirect', [SocialiteController::class, 'redirect'])->name('auth.redirect');
+Route::get('auth/{provider}/callback', [SocialiteController::class, 'callback'])->name('auth.callback');
+
+
 
 Route::view('/', 'index')->name('home');
 

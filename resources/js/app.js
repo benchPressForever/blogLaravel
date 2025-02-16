@@ -18,15 +18,17 @@ buttonLike.forEach((elem) => {
 });
 
 let buttonAdmin = document.querySelector('.AdminButton');
-buttonAdmin.addEventListener('click',() => {
-    axios.post('/login',{'email':'admin@admin.ru','password':'12345678'})
+buttonAdmin.addEventListener('click', () => {
+    axios.post('/login', {'email': 'admin@admin.ru', 'password': '12345678'})
         .then(response => {
-            window.location.replace("http://127.0.0.1:8000/admin");
+            window.location.replace("http://blog.loc/admin");
         })
         .catch(error => {
             console.log('Error:')
         });
 });
+
+
 
 
 
