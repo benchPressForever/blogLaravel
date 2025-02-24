@@ -44,7 +44,11 @@
                                             <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post) }}">Изменить</a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-danger" href="{{ route('admin.posts.delete', $post) }}">Удалить</a>
+                                            <form action="{{ route('admin.posts.delete', $post) }}" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger">Удалить</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty

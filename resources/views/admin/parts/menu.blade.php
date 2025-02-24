@@ -16,4 +16,16 @@
         <a class="nav-link @if (Route::is('admin.users.index')) active @endif" href="{{ route('admin.users.index') }}">Пользователи</a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link @if (Route::is('admin.comments.index')) active @endif" href="{{ route('admin.comments.index') }}">Комментарии</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link @if (Route::is('admin.complaints.index')) active @endif" href="{{ route('admin.complaints.index') }}">Жалобы</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link @if (Route::is('admin.reasons.index')) active @endif" href="{{ route('admin.reasons.index') }}">Причины</a>
+    </li>
+
 </ul>

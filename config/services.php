@@ -38,6 +38,11 @@ return [
         'redirect' => env('TELEGRAM_REDIRECT_URI'),
     ],
 
+    'recaptcha' => [
+        'sitekey' => env('RECAPTCHA_SITEKEY'),
+        'secret' => env('RECAPTCHA_SECRET'),
+    ],
+
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),

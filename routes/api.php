@@ -15,9 +15,14 @@ Route::post('/login',[AuthController::class,'login']);
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 
-Route::get('/posts', [PostController::class, 'index']);
-Route::get('/posts/{id}', [PostController::class, 'show'])->middleware('auth:sanctum');
-Route::put('/posts/update/{id}', [PostController::class, 'update']);
-Route::delete('/posts/delete/{id}', [PostController::class, 'delete']);
+
+Route::name('posts.')
+    ->prefix('posts')
+    ->group(function () {
+        Route::get('/', [PostController::class, 'index']);
+        Route::get('/{id}', [PostController::class, 'show']);
+        Route::put('/update/{id}', [PostController::class, 'update'])->middleware('auth:sanctum');
+        Route::delete('/delete/{id}', [PostController::class, 'delete'])->middleware('auth:sanctum');
+    });
 
 

@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
             PostSeeder::class,
+            CommentSeeder::class,
+            ReasonSeeder::class,
+            ComplaintSeeder::class,
+
         ]);
     }
 }

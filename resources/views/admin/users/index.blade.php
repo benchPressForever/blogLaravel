@@ -50,7 +50,11 @@
                                             <a class="btn btn-primary" href="{{ route('admin.users.edit', $user) }}">Изменить</a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-danger" href="{{ route('admin.users.delete', $user) }}">Удалить</a>
+                                            <form action="{{ route('admin.users.delete', $user) }}" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger">Удалить</button>
+                                            </form>
                                         </td>
                                         <td>
                                             <a class="btn {{$user->is_admin ? "btn-danger": "btn-success"}}" href="{{ route('admin.users.change.admin', $user) }}">

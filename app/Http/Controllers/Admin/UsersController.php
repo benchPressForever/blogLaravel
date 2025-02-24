@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Comment;
+use App\Models\Complaint;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use Symfony\Component\Console\Input\Input;
 
-class AdminUsersController extends Controller{
+class UsersController extends Controller{
 
     public function index()
     {
@@ -47,6 +50,9 @@ class AdminUsersController extends Controller{
     public function delete(User $user)
     {
         try{
+            Post::query()->where("user_id",$user->id)->delete();
+            Complaint::query()->where("user_id",$user->id)->delete();
+            Comment::query()->where("user_id",$user->id)->delete();
             $user->delete();
         }
         catch(\Exception $e){

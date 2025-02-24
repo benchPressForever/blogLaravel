@@ -52,17 +52,6 @@
                         </div>
 
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                    <a href="auth/github/redirect" class="text-decoration-none">
-                                        <img src="github.png"  width="50" alt="">
-                                    </a>
-                                    <a href="auth/telegram/redirect">
-                                        <img src="telegram.png" class = "text-decoration-none" width="50" alt="">
-                                    </a>
-                            </div>
-                        </div>
-
 
 
                         <div class="row mb-0">
@@ -78,7 +67,25 @@
                                 @endif
                             </div>
                         </div>
+
+
+                        <div class="row mb-3 mt-3">
+                            <div class="col-md-6 offset-md-4">
+                                <a href="auth/github/redirect" class="text-decoration-none ">
+                                    <img src="github.png"  width="50" alt="">
+                                </a>
+                                <a href="auth/telegram/redirect">
+                                    <img src="telegram.png" class = "text-decoration-none" width="50" alt="">
+                                </a>
+                            </div>
+                        </div>
+
+
+
                     </form>
+
+
+
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AdminCategoriesController extends Controller
+class CategoriesController extends Controller
 {
     public function index()
     {

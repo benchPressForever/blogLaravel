@@ -42,7 +42,11 @@
                                                             <a class="btn btn-primary" href="{{ route('admin.categories.edit', $category) }}">Изменить</a>
                                                         </td>
                                                         <td>
-                                                            <a class="btn btn-danger" href="{{ route('admin.categories.delete',$category) }}">Удалить</a>
+                                                            <form action="{{ route('admin.categories.delete', $category) }}" method="POST">
+                                                                @method('DELETE')
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-danger">Удалить</button>
+                                                            </form>
                                                         </td>
                                                     </tr>
                                             @empty

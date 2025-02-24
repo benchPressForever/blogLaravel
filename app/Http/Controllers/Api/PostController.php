@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class PostController extends Controller
 {
     public function index(){
-        return PostResource::collection(Post::with('category')->paginate(5));
+        return PostResource::collection(Post::with(['category','comment','user'])->paginate(5));
     }
 
     public function show($id){

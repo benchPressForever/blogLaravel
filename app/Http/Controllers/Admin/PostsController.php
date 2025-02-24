@@ -6,13 +6,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateAndStorePostRequest;
 use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Complaint;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
-class AdminPostsController extends Controller
+class PostsController extends Controller
 {
 
     public function index(){
@@ -41,7 +43,9 @@ class AdminPostsController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('posts', 'public');
             $data['image'] = $imagePath;
+
         }
+
 
         try {
             $post->update($data);
@@ -67,6 +71,8 @@ class AdminPostsController extends Controller
     public function delete(Post $post)
     {
         try {
+            Complaint::query()->where("post_id",$post->id)->delete();
+            Comment::query()->where("post_id",$post->id)->delete();
             $post->delete();
         }
         catch (\Exception $exception){

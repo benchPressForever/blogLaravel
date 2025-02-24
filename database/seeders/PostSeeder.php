@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ class PostSeeder extends Seeder
                 'title' => fake()->realText(10),
                 'text' => fake()->realText(1000),
                 'category_id' => Category::query()->inRandomOrder()->first()->id,
+                'user_id' => User::query()->inRandomOrder()->first()->id,
             ]);
         }
 
