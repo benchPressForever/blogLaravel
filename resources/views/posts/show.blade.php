@@ -21,15 +21,17 @@
 
                     <div class="p-3">
                         <h5 class="m-3">Автор : {{$user->name}}</h5>
-                        <div class="card-body">
+                        <div class="textDiv">
                             @if ($post->image)
                                 <img class="w-25 me-2 float-start" src="{{ asset('storage/' . $post->image) }}" alt="img">
                             @endif
-                            {{ $post->text }}
+                            <div>
+                                {{ $post->text }}
+                            </div>
                         </div>
 
-                        <div class="row ">
-                            <button data-id="{{ $post->id }}" class="btn btn-primary w-25 likeButton ms-3 mb-2">
+                        <div class="panel">
+                            <button data-id="{{ $post->id }}" class="btn btn-primary w-25 likeButton  m-2">
                                 Likes: <span id="likeCount">{{ $post->likes }}</span>
                             </button>
 
@@ -79,7 +81,7 @@
                                 </div>
                             </div>
                         @empty
-                            <p>Нет комментариев</p>
+                            <h5 class="m-3">Нет комментариев</h5>
                         @endforelse
 
                         <a href="{{ route('comments.create',$post->id) }}" class="btn btn-success w-25 m-3">Написать комментарий</a>

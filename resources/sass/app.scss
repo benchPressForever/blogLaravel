@@ -6,3 +6,33 @@
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+.panel{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 25vw;
+    height: auto;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.textDiv{
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: auto;
+    margin-bottom: 20px;
+    margin-left: 18px;
+}
+
+
+.textDiv img{
+    border-radius: 10px;
+}
+
+.panel form{
+    margin-right: 10px;
+}
+

@@ -31,7 +31,7 @@ class AuthController extends Controller
 
 
        if(Auth::attempt($request->only('email', 'password'))) {
-           $authUser = Auth::user();
+           $authUser = (object)Auth::user();
 
            return new AuthResource((object)[
                'token' => $authUser->createToken('authToken')->plainTextToken,

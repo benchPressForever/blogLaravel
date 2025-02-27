@@ -16,7 +16,7 @@ class CommentSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             DB::table('comments')->insert([
                 'text' => fake()->realText(1000),
                 'user_id' => User::query()->inRandomOrder()->first()->id,

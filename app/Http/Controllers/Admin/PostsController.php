@@ -93,6 +93,7 @@ class PostsController extends Controller
                 $imagePath = $request->file('image')->store('posts', 'public');
             }
             $validated['image'] = $imagePath;
+            $validated['user_id'] = Auth::id();
             Post::create($validated);
         }
         catch (\Exception $exception){

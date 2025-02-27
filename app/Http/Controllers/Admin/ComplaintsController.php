@@ -14,7 +14,7 @@ class ComplaintsController extends Controller
 {
 
     public function index(){
-        $complaints = Complaint::query()->with(["user",'reason'])->orderBy("created_at")->paginate(5);
+        $complaints = Complaint::query()->with(["user",'reason'])->orderBy("created_at","desc")->paginate(5);
 
         return view('admin.complaints.index', [
             'complaints' => $complaints

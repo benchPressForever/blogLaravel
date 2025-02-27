@@ -51,7 +51,7 @@
 
 
 
-                <div class="mb-3 w-auto ">
+                <div class="panel w-100 p-0">
                         <form action="{{ route('admin.complaints.delete.post', $complaint) }}" method="POST">
                             @method('DELETE')
                             @csrf

@@ -21,6 +21,7 @@ class PostSeeder extends Seeder
                 'text' => fake()->realText(1000),
                 'category_id' => Category::query()->inRandomOrder()->first()->id,
                 'user_id' => User::query()->inRandomOrder()->first()->id,
+                'created_at' => now(),
             ]);
         }
 

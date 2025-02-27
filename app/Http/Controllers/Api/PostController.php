@@ -7,12 +7,13 @@ use App\Http\Requests\UpdateAndStorePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
     public function index(){
-        return PostResource::collection(Post::with(['category','comment','user'])->paginate(5));
+        return PostResource::collection(Post::query()->with(['category','comment','user'])->orderBy("likes","desc")->get());
     }
 
     public function show($id){
@@ -50,6 +51,35 @@ class PostController extends Controller
         ]);
     }
 
+
+    public function create(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|min:5|max:255',
+            'text' => 'required|min:5|max:20000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'message' => 'Posts validation error',
+                'errors' => $validator->errors()
+            ]);
+        }
+        $request['user_id'] = Auth::id();
+
+        $post = Post::create($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Posts created successfully',
+            'post' => $post,
+        ]);
+    }
+
     public function delete($id){
         $post = Post::query()->findOrFail($id);
 
@@ -63,6 +93,44 @@ class PostController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'Posts deleted unsuccessfully',
+        ]);
+    }
+
+    public function addLike($id)
+    {
+        $post = Post::query()->findOrFail($id);
+
+        if($post){
+            $post->increment('likes');
+            return response()->json([
+                'seccess' => true,
+                'message' => 'Liked',
+                'likes' => $post->likes,
+            ]);
+        }
+        return response()->json([
+            'seccess'=>'false',
+            'message'=>'No Liked',
+            'likes'=> $post->likes,
+        ]);
+    }
+
+    public function delLike($id)
+    {
+        $post = Post::query()->findOrFail($id);
+
+        if($post and $post->likes > 0){
+            $post->decrement('likes');
+            return response()->json([
+                'seccess' => true,
+                'message' => 'Liked',
+                'likes' => $post->likes,
+            ]);
+        }
+        return response()->json([
+            'seccess'=>'false',
+            'message'=>'No Liked',
+            'likes'=> $post->likes,
         ]);
     }
 }
